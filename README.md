@@ -9,6 +9,7 @@
     ----|---- 
     | OS | 2021-03-04-raspios-buster-armhf-full |
     | Fw | dotnet-sdk-3.1.113-linux-arm |
+    | Interfacing Options | I2C: Enabled |
     
 * GY-30（光センサー）
 
