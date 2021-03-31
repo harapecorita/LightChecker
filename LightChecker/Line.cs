@@ -37,16 +37,16 @@ namespace LightChecker
                 var message = $"電気が点きました。";
                 await SendPushMessage(message);
             }
-            public async Task NowOff(TimeSpan span)
+            public async Task OverNowOff(TimeSpan overSpan)
             {
-                var wH = PowerConsumption * span.TotalHours;
+                var wH = PowerConsumption * overSpan.TotalHours;
                 var kWh = wH / 1000;
 
                 // 超過分の電気料金
                 var charges = kWh * ElectricityRates;
 
                 var message = $"電気が消えました。\r\n" +
-                              $"{Math.Round(span.TotalMinutes)}分超過しました。\r\n" +
+                              $"{Math.Round(overSpan.TotalMinutes)}分超過しました。\r\n" +
                               $"超過分の消費量は約{Math.Round(wH)}Wh、電気代は約{Math.Round(charges)}円です。";
                 await SendPushMessage(message);
             }

@@ -19,7 +19,8 @@ namespace LightChecker
             var notify = new Line.Notify(Secret.ChannelAccessToken, Secret.GroupId, 7.3, 28.7);
             // 監視イベントハンドラにLINE通知のメソッドを登録
             monitor.NowOn += NowOn;
-            monitor.NowOff += notify.NowOff;
+            monitor.NowOff += NowOff;
+            monitor.OverNowOff += notify.OverNowOff;
             monitor.StillOn += notify.StillOn;
             // 監視開始
             Log.Write($"監視を開始します。(上限点灯時間: {limitSeconds}秒)");
@@ -28,6 +29,11 @@ namespace LightChecker
         public static async Task NowOn()
         {
             var message = $"電気が点きました。";
+            await Task.Run(() => Log.Write(message));
+        }
+        public static async Task NowOff()
+        {
+            var message = $"電気が消えました。";
             await Task.Run(() => Log.Write(message));
         }
     }

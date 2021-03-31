@@ -6,13 +6,14 @@ namespace LightChecker
     class Monitor
     {
         public delegate Task NowOnEventHandler();
-        public delegate Task NowOffEventHandler(TimeSpan overSpan);
+        public delegate Task NowOffEventHandler();
+        public delegate Task OverNowOffEventHandler(TimeSpan overSpan);
         public delegate Task StillOnEventHandler(TimeSpan span);
 
         public event NowOnEventHandler NowOn;
         public event NowOffEventHandler NowOff;
+        public event OverNowOffEventHandler OverNowOff;
         public event StillOnEventHandler StillOn;
-
         public int LimitSeconds { get; }
         public Light Light { get; }
         public Monitor(int limitSeconds, Light light)
@@ -40,17 +41,19 @@ namespace LightChecker
                         // 点いた日時をセット
                         latestOn = DateTime.Now;
                         // 通知
-                        if(NowOn != null) await NowOn();
+                        if (NowOn != null) await NowOn();
                         break;
                     case RunningStatus.NowOff:
                         // 上限点灯時間を超えている場合
                         if (0 < overSpan.TotalSeconds)
                         {
                             // 通知
-                            if (NowOff != null) await NowOff(overSpan);
+                            if (OverNowOff != null) await OverNowOff(overSpan);
                             // 通知済みをリセット
                             hasNotifyed = false;
                         }
+                        // 超えていない場合は通常のオフイベントを呼ぶ
+                        else if (NowOff != null) await NowOff();
                         break;
                     case RunningStatus.StillOn:
                         // 上限点灯時間を超えているかつ、通知済みで無い場合
