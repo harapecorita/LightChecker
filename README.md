@@ -9,7 +9,7 @@ https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf
 
 ここでは0.5lxの'HResolutionMode2'を使用しています。
 
-閾値は1-255の間で設定することができます。
+閾値は0-255の間で設定することができます。
 
 ```csharp:Program.cs
 // 光センサー
